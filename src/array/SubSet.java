@@ -1,5 +1,8 @@
 package array;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /*
@@ -11,31 +14,82 @@ import java.util.List;
 
 public class SubSet {
     public List<List<Integer>> subsets(int[] nums) {
-        int n = nums.length;
-        List<List<Integer>> subsets = new ArrayList<>();
-        for (int i = 0; i < Math.pow(2, n); i++)
-        {
-            List<Integer> subset = new ArrayList<>();
-            for (int j = 0; j < n; j++)
-            {
-                if (((1 << j) & i) != 0)
-                    subset.add(nums[j]);
-            }
-            Collections.sort(subset);
-            subsets.add(subset);
-        }
-        return subsets;
+    	List<List<Integer>> results = new ArrayList<List<Integer>>();
+    	results.add(new ArrayList<Integer>());
+    	Arrays.sort(nums);
+    	for (int i: nums){
+    		List<List<Integer>> temp = new ArrayList<List<Integer>>();
+    		for (List<Integer> oneSubSet: results){
+    			List<Integer> existing = new ArrayList<Integer>(oneSubSet);
+    			existing.add(i);
+    			temp.add(existing);
+    		}
+    		results.addAll(temp);
+    	}
+    	return results;
         
-        sort (S.begin(), S.end());
-        int elem_num = S.size();
-        int subset_num = pow (2, elem_num);
-        vector<vector<int> > subset_set (subset_num, vector<int>());
-        for (int i = 0; i < elem_num; i++)
-            for (int j = 0; j < subset_num; j++)
-                if ((j >> i) & 1)
-                    subset_set[j].push_back (S[i]);
-        return subset_set;
+    }
+    
+    public List<List<Integer>> subsets2(int[] nums) {
+    	Arrays.sort(nums);
+    	List<List<Integer>> results = new ArrayList<List<Integer>>();
+    	results.add(new ArrayList<Integer>());
+    	for (int i = 0; i<nums.length;i++){
+    		int size = results.size();
+    		for(int j = 0; j<size;j++){
+    			List<Integer> temp = new ArrayList<Integer>(results.get(j));
+    			temp.add(nums[i]);
+    			results.add(temp);
+    		}
+    	}
+    	return results;
+    }
+    
+    //Use bit manipulation
+    public List<List<Integer>> subsets1(int[] nums) {
+    	List<List<Integer>> subsets = new ArrayList<List<Integer>>();
+    	int length = nums.length;
+    	for (int i= 0; i< Math.pow(2, length);i++){
+    		List<Integer> oneSubset = new ArrayList<Integer>();
+    		for (int j = 0; j< length;j++){
+    			//if (((1 << j) & i) != 0)
+    			if (((i>>j)&1) != 0){
+    				oneSubset.add(nums[j]);
+    			}
+    		}
+    		Collections.sort(oneSubset);
+    		subsets.add(oneSubset);
+    	}
+    	return subsets;
+    }
+    
+    /*
+     * Given a collection of integers that might contain duplicates, nums, 
+     * return all possible subsets. 
+     */
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
         
+    	Arrays.sort(nums);
+    	List<List<Integer>> results = new ArrayList<List<Integer>>();
+    	results.add(new ArrayList<Integer>());
+    	int size = 0;
+    	for (int i = 0; i<nums.length;i++){
+    		int startIndex = (i >=1 && nums[i]==nums[i-1])?size:0;
+    		size = results.size();
+    		for(int j = startIndex; j<size;j++){
+    			List<Integer> temp = new ArrayList<Integer>(results.get(j));
+    			temp.add(nums[i]);
+    			results.add(temp);
+    		}
+    	}
+    	return results;
+    }
+    
+    
+    public static void main(String[] args){
+    	SubSet subSet = new SubSet();
+    	int nums [] = {1,2,2};
+    	subSet.subsetsWithDup(nums);
     }
 
 }

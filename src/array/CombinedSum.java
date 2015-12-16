@@ -32,11 +32,11 @@ public class CombinedSum {
     	}
   
     	for (int j = i; j< can.length; i++){
-    		int newTarget = target - can[i];
+    		int newTarget = target - can[j];
     		if (newTarget >= 0){
     			List<Integer> copy = new ArrayList<Integer>(list);
-    			copy.add(can[i]);
-    			findCombinations(result, copy, i, newTarget, can);
+    			copy.add(can[j]);
+    			findCombinations(result, copy, j, newTarget, can);
     		}else{
     			break;
     		}
@@ -94,7 +94,7 @@ public class CombinedSum {
     		}else if (can[i] < target){
     			List<Integer> copy = new ArrayList<Integer>(list);
     			copy.add(can[i]);
-    			dfs(result, copy, i+1, target - can[i], can);
+    			dfs1(result, copy, i+1, target - can[i], can);
     		}else{
     			break;
     		}
@@ -129,11 +129,11 @@ public class CombinedSum {
     	}
     }
     //TODO
-    public List<List<Integer>> combinationSumStudy(int[] cands, int t) {
-        Arrays.sort(cands); // sort candidates to try them in asc order
+    public List<List<Integer>> combinationSumStudy(int[] cands, int target) {
+        Arrays.sort(cands); 
         List<List<List<Integer>>> dp = new ArrayList<List<List<Integer>>>();
-        for (int i = 1; i <= t; i++) { // run through all targets from 1 to t
-            List<List<Integer>> newList = new ArrayList(); // combs for curr i
+        for (int i = 1; i <= target; i++) { // run through all targets from 1 to t
+            List<List<Integer>> newList = new ArrayList<List<Integer>>(); // combs for curr i
             // run through all candidates <= i
             for (int j = 0; j < cands.length && cands[j] <= i; j++) {
                 // special case when curr target is equal to curr candidate
@@ -141,14 +141,15 @@ public class CombinedSum {
                 // if current candidate is less than the target use prev results
                 else for (List<Integer> l : dp.get(i-cands[j]-1)) {
                     if (cands[j] <= l.get(0)) {
-                        List cl = new ArrayList<List<List<Integer>>>();
-                        cl.add(cands[j]); cl.addAll(l);
+                        List<Integer> cl = new ArrayList<Integer>();
+                        cl.add(cands[j]); 
+                        cl.addAll(l);
                         newList.add(cl);
                     }
                 }
             }
             dp.add(newList);
         }
-        return dp.get(t-1);
+        return dp.get(target-1);
     }
 }

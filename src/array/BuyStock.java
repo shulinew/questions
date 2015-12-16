@@ -35,23 +35,33 @@ public class BuyStock {
 		 you buy again).
 		 ==============
 		 For Buy and Sell 1, we were limited to 1 transaction, so we had to find the largest sum of contiguous ints in an array of price differences.
-
-Q: Why does finding the most profitable transaction boils down to finding the largest sum of contiguous ints in the array of price differences?
-
-A: Define D[i] = Prices[i] - Prices[i-1] (difference between 2 consecutive prices)
-
-D[i] is essentially a "delta" trade.
-
-A transaction is defined as buying at Prices[X] and selling at Prices[Y], 
-The problem is to find max(Prices[Y] - Prices[X]) which is equivalent to finding the largest sum of contiguous D's.
-
-To illustrate, if D[Y+1] is positive, it means Prices[Y+1] > Prices[Y], which implies I should sell at Prices[Y+1] instead of Prices[Y]. Basically it means I just add D[Y+1] to D[Y] + ... + D[X+1].
-
-Note that there could be a negative or zero D in the best running sequence. It doesn't matter so long the sum of the sequence is the largest.
-
-Now we are allowed unlimited transactions. So if there is a negative D, we could just break the sequence into 2, that is, into 2 transactions so as to avoid the negative element.
-
-This boils the whole problem down to adding up all positive sums of contiguous ints in D, which simplifies to just adding up all the positive ints.
+		
+		Q: Why does finding the most profitable transaction boils down to finding the largest sum of contiguous ints in the array of price differences?
+		
+		A: Define D[i] = Prices[i] - Prices[i-1] (difference between 2 consecutive prices)
+		
+		D[i] is essentially a "delta" trade.
+		
+		A transaction is defined as buying at Prices[X] and selling at Prices[Y], 
+		The problem is to find max(Prices[Y] - Prices[X]) which is equivalent to finding the largest sum of contiguous D's.
+		
+		To illustrate, if D[Y+1] is positive, it means Prices[Y+1] > Prices[Y], which implies I should sell at Prices[Y+1] instead of Prices[Y]. Basically it means I just add D[Y+1] to D[Y] + ... + D[X+1].
+		
+		Note that there could be a negative or zero D in the best running sequence. It doesn't matter so long the sum of the sequence is the largest.
+		
+		Now we are allowed unlimited transactions. So if there is a negative D, we could just break the sequence into 2, that is, into 2 transactions so as to avoid the negative element.
+		
+		This boils the whole problem down to adding up all positive sums of contiguous ints in D, which simplifies to just adding up all the positive ints.
      */
+    public int maxProfit1(int[] prices) {
+    	int max = 0;
+    	for (int i =1;i<prices.length;i++){
+    		if(prices[i] - prices[i-1] > 0){
+    			max += prices[i]-prices[i-1];
+    		}
+    	}
+    	return max;
+        
+    }
 
 }

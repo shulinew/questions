@@ -63,5 +63,17 @@ public class BuyStock {
     	return max;
         
     }
+    public int maxProfit2(int[] prices){
+    	int maxProfit = 0;
+    	int i = 0;
+    	int localMin;
+    	while(i <prices.length){
+    		while(i<prices.length-1 && prices[i+1]<=prices[i]) i++;
+    		localMin = prices[i++];
+    		while(i<prices.length-1 && prices[i+1] >= prices[i]) i++;
+    		maxProfit += (i<prices.length)?prices[i++]-localMin:0;
+    	}
+    	return maxProfit;
+    }
 
 }

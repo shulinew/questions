@@ -5,39 +5,49 @@ package array;
 	How many possible unique paths are there?
  */
 public class UniquePath {
-    public int uniquePaths(int m, int n) {
+    public int uniquePathsBasic(int m, int n) {
+    	int [][] map = new int[m][n];
+    	for (int i = 0;i<m;i++){
+    		map[i][0] = 1;
+    	}
+    	for (int j = 0;j<n;j++){
+    		map[0][j] = 1;
+    	}
+    	for (int i = 1;i<m;i++){
+    		for (int j =1;j<n;j++){
+    			map[i][j] = map[i-1][j] + map[i][j-1];
+    		}
+    	}
+    	return map[m-1][n-1];
+    }
+    public int uniquePaths1DSpace(int m, int n) {
+    	int [] dp = new int[n];
+    	for (int i = 1;i<n;i++){
+    		dp[i] = 1;
+    	}
+    	for (int i = 1;i<m;i++){
+    		for (int j =1;j<n;j++){
+    			dp[j] += dp[j-1];
+    		}
+    	}
+    	return dp[n-1];
     	
-//    	   double cnt = 1;
-//    	    int sum = (m - 1) + (n - 1);
-//    	    int sml =  m < n  ? (m - 1) : (n - 1);
-//    	    while(sml>0) cnt = cnt * sum-- / sml--;
-    	/*
-    	 * First of all you should understand that we need to do n + m - 2 movements : m - 1 down, n - 1 right, because we start from cell (1, 1).
-
-Secondly, the path it is the sequence of movements( go down / go right), therefore we can say that two paths are different when there is i-th (1 .. m + n - 2) movement in path1 differ i-th movement in path2.
-
-So, how we can build paths. Let's choose (n - 1) movements(number of steps to the right) from (m + n - 2), and rest (m - 1) is (number of steps down).
-
-I think now it is obvious that count of different paths are all combinations (n - 1) movements from (m + n-2).
-
-
-For the eg., given in question, 3x7 matrix, robot needs to take 2+6 = 8 steps with 2 down and 6 right in any order. That is nothing but a permutation problem. Denote down as 'D' and right as 'R', following is one of the path :-
-
-D R R R D R R R
-
-We have to tell the total number of permutations of the above given word. So, decrease both m & n by 1 and apply following formula:-
-
-Total permutations = (m+n)! / (m! * n!)
-    	 */
-
-    	    return (int) Math.round(cnt);
-        boolean[][] states = new int[m][n];
-        int uniquePaths = 0;
-        for (int i = 0; i< m;i++){
-        	for (int j = 0; j< n;j++){
-        		
-        	}
-        }
+    }
+    public int uniquePaths(int m, int n) {
+    	if (m > n){
+    		m = m+n;
+    		n = m-n;
+    		m = m-n;
+    	}
+    	m--;
+    	n--;
+    	long result = 1;
+    	int j = n+1;
+    	for (int i = 1; i <= m;j++,i++){
+    		result *= j;
+    		result /=i;
+    	}
+    	return (int)result;
     }
     
     /*
@@ -46,5 +56,32 @@ Total permutations = (m+n)! / (m! * n!)
 		For example,
 		There is one obstacle in the middle of a 3x3 grid as illustrated below.
      */
+    
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+    	int n = obstacleGrid[0].length;
+    	int [] currentRow = new int[n];
+    	for (int i = 0; i< n;i++){
+    		if (obstacleGrid[0][i] == 0){
+    			currentRow[i] = 1;
+    		}
+    	}
+    	for (int i = 1;i<obstacleGrid.length;i++){
+    		for (int j =1;j<n;j++){
+    			if (obstacleGrid[i][j] == 0){
+    				currentRow[j] += currentRow[j-1];
+    			}else{
+    				currentRow[j] = 0;
+    			}
+    		}
+    	}
+    	return currentRow[n-1];
+        
+    }
+    public static void main(String[] args){
+    	UniquePath path = new UniquePath();
+    	int[][] obstacleGrid = {{1,0}};
+    	path.uniquePathsWithObstacles(obstacleGrid);
+    }
+    
 
 }

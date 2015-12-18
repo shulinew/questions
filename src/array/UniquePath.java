@@ -60,17 +60,13 @@ public class UniquePath {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
     	int n = obstacleGrid[0].length;
     	int [] currentRow = new int[n];
-    	for (int i = 0; i< n;i++){
-    		if (obstacleGrid[0][i] == 0){
-    			currentRow[i] = 1;
-    		}
-    	}
-    	for (int i = 1;i<obstacleGrid.length;i++){
-    		for (int j =1;j<n;j++){
-    			if (obstacleGrid[i][j] == 0){
-    				currentRow[j] += currentRow[j-1];
-    			}else{
+    	currentRow[0] = 1;
+    	for (int i = 0;i<obstacleGrid.length;i++){
+    		for (int j =0;j<n;j++){
+    			if (obstacleGrid[i][j] == 1){
     				currentRow[j] = 0;
+    			}else if (j >0){
+    				currentRow[j] += currentRow[j-1];
     			}
     		}
     	}

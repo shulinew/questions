@@ -1,5 +1,9 @@
 package string;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /*
  *  Given two strings s and t which consist of only lower case letters.
 
@@ -9,7 +13,34 @@ package string;
  */
 public class FindDifference {
     public char findTheDifference(String s, String t) {
-        
+        char [] sChars = s.toCharArray();
+        char [] tChars = t.toCharArray();
+        Arrays.sort(sChars);
+        Arrays.sort(tChars);
+        int i;
+        for (i = 0; i< sChars.length; i++){
+        	if (sChars[i] != tChars[i]){
+        		return tChars[i];
+        	}
+        }
+        return tChars[i];
+       
+    }
+    public char findDifferenceXor(String s, String t){
+        char result = 0;
+        for (char x : s.toCharArray()) result ^= x;
+        for (char x : t.toCharArray()) result ^= x;
+        return result;
+    }
+    
+    public char findDifferenceSum(String s, String t){
+	    char result = t.charAt(t.length() - 1);
+	    for (int i = 0; i < s.length(); i++) {
+	        result += t.charAt(i);
+	        result -= s.charAt(i);
+	    }
+	    return result;
+         
     }
 
 }

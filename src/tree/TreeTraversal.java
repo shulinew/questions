@@ -26,6 +26,24 @@ public class TreeTraversal {
     	}
     	return treeInorderList;       
     }
+    public List<Integer> preorderTraversal(TreeNode root) {
+    	List<Integer> treePreorderTraversalList = new ArrayList<Integer>();
+    	Stack<TreeNode> stack = new Stack<TreeNode>();
+    	TreeNode node = root;
+    	while(!stack.isEmpty() || node != null){
+    		if (node != null){
+    			treePreorderTraversalList.add(node.val);
+    			if (node.right != null){
+    				stack.push(node.right);
+    			}
+    			node = node.left;
+    		}else{
+    			node = stack.pop();
+    		}
+    	}
+    	return treePreorderTraversalList;
+    	
+    }
     
     public List<Integer> postorderTraversal(TreeNode root) {
     	List<Integer> treePostorderTraversalList = new ArrayList<Integer>();
@@ -49,23 +67,9 @@ public class TreeTraversal {
     	return treePostorderTraversalList;
         
     }
-    public List<Integer> preorderTraversal(TreeNode root) {
-    	List<Integer> treePreorderTraversalList = new ArrayList<Integer>();
-    	Stack<TreeNode> stack = new Stack<TreeNode>();
-    	TreeNode node = root;
-    	while(!stack.isEmpty() || node != null){
-    		if (node != null){
-    			treePreorderTraversalList.add(node.val);
-    			if (node.right != null){
-    				stack.push(node.right);
-    			}
-    			node = node.left;
-    		}else{
-    			node = stack.pop();
-    		}
-    	}
-    	return treePreorderTraversalList;
-    	
+    
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        
     }
 
 }

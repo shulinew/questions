@@ -1,7 +1,9 @@
 package sort;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /*
@@ -84,5 +86,60 @@ public class ArrayIntersection {
     	}
     	return -1;
     }
+    /*
+     * Given two arrays, write a function to compute their intersection. 
+     * Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2,2]. 
+     */
+    public int[] intersection2(int[] num1, int[] num2){
+    	Arrays.sort(num1);
+    	Arrays.sort(num2);
+    	int size = Math.min(num1.length, num2.length);
+    	int[] result = new int[size];
+    	int i=0,j=0,k=0;
+    	while (i < num1.length && j < num2.length){
+    		if (num1[i] == num2[j]){
+    			result[k] = num1[i];
+    			i++;
+    			j++;
+    			k++;
+    		}else if (num1[i] < num2[j]){
+    			i++;
+    		}else{
+    			j++;
+    		}
+    	}
+    	int [] newArray = new int[k];
+    	newArray = Arrays.copyOfRange(result, 0, k);
+    	return newArray;
+    }
+    public int[] intersection3(int[] nums1, int[] nums2){
+    	Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    	int result[] = new int[Math.min(nums1.length, nums2.length)];
+    	for (int i = 0; i< nums1.length;i++){
+    		int num = map.getOrDefault(nums1[i], 0) +1;
+    		map.put(nums1[i], num);
+    	}
+    	int j=0;
+    	for (int i =0;i<nums2.length;i++){
+    		if (map.containsKey(nums2[i]) && map.get(nums2[i]) != 0){
+    			result[j] = nums2[i];
+    			map.put(nums2[i], map.get(nums2[i]) -1);
+    			j++;
+    		}
+    	}
+    	int [] newArray = new int[j];
+    	newArray = Arrays.copyOfRange(result, 0, j);
+    	return newArray;
+    }
+    /*
+     * java 8
+     *  Map<Integer, Long> map = Arrays.stream(nums2).boxed().collect(Collectors.groupingBy(e->e, Collectors.counting()));
+    return Arrays.stream(nums1).filter(e ->{
+        if(!map.containsKey(e)) return false;
+        map.put(e, map.get(e) - 1);
+        if(map.get(e) == 0) map.remove(e);
+        return true;
+    }).toArray();
+     */
 
 }

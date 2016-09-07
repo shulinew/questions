@@ -34,7 +34,23 @@ public class ValidAnagram {
 			}
 		}
 		return true;
-        
     }
+	public boolean isAnagram1(String s, String t){
+		int [] counts = new int[26];
+		for (int i = 0; i< s.length();i++){
+			counts[s.charAt(i) -'a']++;
+		}
+		for (int i =0;i<t.length();i++){
+			if (--counts[t.charAt(i) - 'a'] < 0){
+				return false;
+			}
+		}
+		for (int i = 0;i<counts.length;i++){
+			if (counts[i] > 0){
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

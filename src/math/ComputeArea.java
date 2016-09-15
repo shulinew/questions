@@ -12,7 +12,5 @@ public class ComputeArea {
     		overlap = (topY - bottomY) * (topX - bottomX);
     	}
     	return diff - overlap;
-        
     }
-
 }

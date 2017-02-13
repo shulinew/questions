@@ -47,8 +47,8 @@ public class DepthOfTree {
             return 0;
         }
 
-        Stack<TreeNode> stack = new Stack<>();
-        Stack<Integer> value = new Stack<>();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        Stack<Integer> value = new Stack<Integer>();
         stack.push(root);
         value.push(1);
         int max = 0;

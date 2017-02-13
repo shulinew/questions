@@ -43,6 +43,18 @@ public class FlatBinaryTreeToList {
       }  
     }
     
+    private TreeNode prev = null;
+
+    public void flatten2(TreeNode root) {
+        if (root == null)
+            return;
+        flatten2(root.right);
+        flatten2(root.left);
+        root.right = prev;
+        root.left = null;
+        prev = root;
+    }
+    
     public void flatten1(TreeNode root) {
         if (root == null) return;
         Stack<TreeNode> stack = new Stack<TreeNode>();
@@ -63,5 +75,22 @@ public class FlatBinaryTreeToList {
         }
         
       }
+    
+    public void flatten3(TreeNode root) {
+        if (root == null) return;
+        
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        
+        root.left = null;
+        
+        flatten3(left);
+        flatten3(right);
+        
+        root.right = left;
+        TreeNode cur = root;
+        while (cur.right != null) cur = cur.right;
+        cur.right = right;
+    }
 
 }

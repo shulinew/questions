@@ -14,6 +14,7 @@ import java.util.Queue;
 	  return [1,3,4]
  */
 public class BalanceTreeRightSideView {
+	//[1,2,3,4] is not rights
     public List<Integer> rightSideView(TreeNode root) {
     	List<Integer> list = new ArrayList<Integer>();
     	while (root != null){

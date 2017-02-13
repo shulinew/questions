@@ -197,29 +197,56 @@ public class TreeTraversal {
         travel(curr.left, sol, level + 1);
         travel(curr.right, sol, level + 1);
     }
-    public List<List<Integer>> zigzagLevelOrder2(TreeNode root) 
-    {
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        boolean order = true;
-        int size = 1;
-
-        while(!q.isEmpty()) {
-            List<Integer> tmp = new ArrayList<>();
-            for(int i = 0; i < size; ++i) {
-                TreeNode n = q.poll();
-                if(order) {
-                    tmp.add(n.val);
-                } else {
-                    tmp.add(0, n.val);
-                }
-                if(n.left != null) q.add(n.left);
-                if(n.right != null) q.add(n.right);
-            }
-            res.add(tmp);
-            size = q.size();
-            order = order ? false : true;
-        }
-        return res;
+//    public List<List<Integer>> zigzagLevelOrder2(TreeNode root) 
+//    {
+//        Queue<TreeNode> q = new LinkedList<>();
+//        q.add(root);
+//        boolean order = true;
+//        int size = 1;
+//
+//        while(!q.isEmpty()) {
+//            List<Integer> tmp = new ArrayList<>();
+//            for(int i = 0; i < size; ++i) {
+//                TreeNode n = q.poll();
+//                if(order) {
+//                    tmp.add(n.val);
+//                } else {
+//                    tmp.add(0, n.val);
+//                }
+//                if(n.left != null) q.add(n.left);
+//                if(n.right != null) q.add(n.right);
+//            }
+//            res.add(tmp);
+//            size = q.size();
+//            order = order ? false : true;
+//        }
+//        return res;
+//    }
+    
+    public List<Integer> morrisTraversal(TreeNode root) {
+    	TreeNode current = root;
+    	TreeNode previous = null;
+    	List<Integer> inOrderList = new ArrayList<Integer>();
+    	while (current != null) {
+    		if (current.left == null) {
+    			inOrderList.add(current.val);
+    			current = current.right;
+    		} else {
+    			previous = current.left;
+    			while (previous.right != null && previous.right != current) {
+    				previous = previous.right;
+    			}
+    			if (previous.right == null) {
+    				previous.right = current;
+    				current = current.left;
+    			} else {
+    				previous.right = null;
+    				inOrderList.add(current.val);
+    				current = current.right;
+    				
+    			}
+    		}
+    	}
+    	return inOrderList;
     }
 }

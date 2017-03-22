@@ -90,13 +90,15 @@ public class PerfectSquares {
     public int numSquares5(int n) {
         ArrayDeque<Integer> queue = new ArrayDeque<Integer>();
         queue.add(n);
-        int depth = 1, m = 1, tmp = 0;
+        // m is how many nodes in each level
+        // nodesCount is children count of each node	
+        int depth = 1, m = 1, nodesCount = 0;
         
         while(true){
             if(m == 0){
                 depth++;
-                m = tmp;
-                tmp = 0;
+                m = nodesCount;
+                nodesCount = 0;
             }
             
             int cur = queue.remove();
@@ -109,7 +111,7 @@ public class PerfectSquares {
                 if(delta == 0)
                     return depth;
                 queue.add(delta);
-                tmp++;
+                nodesCount++;
             }
         }
     }

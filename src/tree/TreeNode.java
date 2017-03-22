@@ -2,10 +2,10 @@ package tree;
 
 
 public class TreeNode {
-	int val;
-	TreeNode left;
-	TreeNode right;
-	TreeNode next;
+	public int val;
+	public TreeNode left;
+	public TreeNode right;
+	public TreeNode next;
 	
 	TreeNode (int x){
 		val = x;
@@ -19,6 +19,15 @@ public class TreeNode {
 	}
 	public void setRight(TreeNode node){
 		this.right = node; 
+	}
+	public TreeNode getLeft(){
+		return this.left;
+	}
+	public TreeNode getRight() {
+		return this.right;
+	}
+	public int getValue(){
+		return this.val;
 	}
 
 }

@@ -53,9 +53,9 @@ public class CourseScheduleII {
     	}
     	return finished == linkCounts.length? order: new int[0];
     }
-    
+    @SuppressWarnings("unused")
     private int[] solveDfs(List<List<Integer>> adjs) {
-    	BitSet hasCycle = new BitSet(1);
+//    	BitSet hasCycle = new BitSet(1);
     	BitSet finished = new BitSet(adjs.size());
     	BitSet onStack = new BitSet(adjs.size());
     	

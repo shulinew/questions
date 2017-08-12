@@ -3,6 +3,8 @@ package trie;
 import java.util.HashSet;
 import java.util.Set;
 
+import math.CountSay;
+
 /*
  * Given a non-empty array of numbers, a0, a1, a2, … , an-1, where 0 ≤ ai < 231.
 	
@@ -122,9 +124,14 @@ S	since the MSB is 3, I'll start from i = 3 to make it simplify.
     }
     
     public static void main(String[] args) {
-    	FindMaximumXor test = new FindMaximumXor();
-    	int [] nums = {3, 10, 5, 25, 2, 8};
-    	test.findMaximumXOR(nums);
+//    	FindMaximumXor test = new FindMaximumXor();
+//    	int [] nums = {3, 10, 5, 25, 2, 8};
+//    	test.findMaximumXOR(nums);
+    	CountSay countSay = new CountSay();
+    	System.out.println("1: " + countSay.countAndSay(1));
+    	System.out.println("2: " + countSay.countAndSay(2));
+    	System.out.println("3: " + countSay.countAndSay(3));
+    	System.out.println("4: " + countSay.countAndSay(4));
     }
 
 }

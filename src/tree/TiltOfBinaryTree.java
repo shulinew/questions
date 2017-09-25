@@ -22,5 +22,18 @@ Tilt of binary tree : 0 + 0 + 1 = 1
 
  */
 public class TiltOfBinaryTree {
-
+    int sum = 0;
+	public int findTilt(TreeNode root) {
+		postOrder(root);
+		return sum;
+	}
+	private int postOrder(TreeNode node) {
+		if (node == null) {
+			return 0;
+		}
+		int left = postOrder(node.left);
+		int right = postOrder(node.right);
+		sum += Math.abs(left - right);
+		return node.val + right + left;
+	}
 }

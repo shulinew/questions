@@ -33,4 +33,32 @@ public class QuickSort {
 		return data;
 	}
 
+	public int[] selectionSort(int[] data) {
+		int length = data.length;
+		for (int i = 0; i < length; i++) {
+			int min = i;
+			for (int j = i; j < length; j++) {
+				if (data[i] > data[j]) {
+					min = j;
+				}
+			}
+			if (min != i) {
+				int temp = data[i];
+				data[i] = data[j];
+				data[j] = temp;
+			}
+		}
+	}
+	
+	public int[] insertionSort(int[] data) {
+		int length = data.length;
+		for (int i = 1; i < length; i++) {
+			for (int j = i; j > 0 && (data[j] < data[j-1]); j--) {
+				int temp = data[j];
+				data[j] = data[j-1];
+				data[j-1] = temp;
+			}
+		}
+	}
+
 }

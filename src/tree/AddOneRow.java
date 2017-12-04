@@ -95,6 +95,6 @@ public class AddOneRow {
 		if (root == null) return null;
 		root.left = addOneRowDfs(root.left, v, d == 2? 1: d-1);
 		root.right = addOneRowDfs(root.right, v, d== 2 ? 0: d-1);
+		return root;
 	}
-
 }

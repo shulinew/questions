@@ -128,6 +128,25 @@ public class CombinedSum {
     		findCombinations(result, subList, i+1, n-1, sum -i);
     	}
     }
+
+    public List<List<Integer>> combination3Backtrrace(int k, int n) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        backTrace(result, new ArrayList<Integer>(), 1, n, k);
+        return result;
+    }
+    private void backTrace(List<List<Integer>> result, List<Integer> tempList, int start, int sum, int count) {
+        if (count == 0 && sum == 0) {
+            result.add(new ArrayList<Integer>(tempList));
+        } else {
+            for (int i = start; i <= 9; i++) {
+                if (!tempList.contains(i) && sum - i >=0) {
+                    tempList.add(i);
+                    backTrace(result, tempList, i +1, sum-i, count-1);
+                    tempList.remove(tempList.size()-1);
+                }
+            }
+        }
+    }
     //TODO
     public List<List<Integer>> combinationSumStudy(int[] cands, int target) {
         Arrays.sort(cands); 

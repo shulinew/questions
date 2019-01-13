@@ -25,35 +25,6 @@ Then, delete 3 again to earn 3 points, and 3 again to earn 3 points.
 */
 
 public class DeleteWin {
-    public int totalNums(int[] nums) {
-        int length = nums.length;
-        int max = 0;
-        int tempMax = 0;
-        int [] temp = nums;
-        for (int k = 0; k < length; k++) {
-            tempMax += nums[k];
-            temp[k] = 0;
-            delete(temp  k);
-            for (int i = 0; i < length; i++) {
-                if (temp[i] != 0) {
-                    tempMax += nums[i];
-                    temp[i] = 0;  
-                    delete(temp  i);
-                }
-            }
-            max = Math.max(max, tempMax);
-            tempMax = 0;
-            temp = nums;
-        }
-        return max;
-    }
-    private void delete(int[] temp, int i) {
-        for (int j = 0; j < temp.length; j++) {
-            if (i != j && nums[i] != 0 && (nums[j] == nums[i] - 1 || nums[j] == nums[i] + 1)) {
-                temp[j] = 0;
-            }
-        }
-    }
 
     public int deleteAndEarn(int[] nums) {
         int n = 10001;

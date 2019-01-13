@@ -75,7 +75,7 @@ public class TargetSum {
         res += dfs(nums, sums, S, index + 1, sum - nums[index]);
         return res;
     }
-    public int findTargetSumWays(int[] nums, int S) {
+    public int findTargetSumWaysDP(int[] nums, int S) {
         int[][] dp = new int[nums.length][2001];
         dp[0][nums[0] + 1000] = 1;
         dp[0][-nums[0] + 1000] += 1;
@@ -105,5 +105,71 @@ public class TargetSum {
             dp = next;
         }
         return S > 1000 ? 0 : dp[S + 1000];
+    }
+
+    public int findTargetSumWays(int[] nums, int s) {
+        int sum = 0;
+        for (int n : nums)
+            sum += n;
+        return sum < s || (s + sum) % 2 > 0 ? 0 : subsetSum(nums, (s + sum) >>> 1); 
+    }   
+
+    public int subsetSum(int[] nums, int s) {
+        int[] dp = new int[s + 1]; 
+        dp[0] = 1;
+        for (int n : nums)
+            for (int i = s; i >= n; i--)
+                dp[i] += dp[i - n]; 
+        return dp[s];
+    }
+
+    public int findTargetSumWays(int[] nums, int S) {
+        int totalSum = 0;
+        for (int num : nums) {  //calculate the totalSum keeping all the elements in the array positive
+            totalSum += num;  
+        }
+        if (totalSum < S || -totalSum > S) { //If the target sum S is not reachable by the range
+            return 0;
+        }
+        int[] dp = new int[2 * totalSum + 1];
+         //dp[i] -> the number of ways to have sum = i - totalSum
+        dp[totalSum] = 1; 
+        //We start from no elements in the array, so there is one way to have sum = 0 that there is no element
+        for (int i = 0; i < nums.length; i++) { //Start from deciding to add the first element as positive or negative
+            int[] next = new int[2 * totalSum + 1];
+            for (int j = 0; j < 2 * totalSum + 1; j++) {
+                if (dp[j] != 0) {  //if current sum j - totalSum is already reached by the previous searched numbers
+                    next[j + nums[i]] += dp[j]; //plus the num of ways to have sum = j - totalSum to the num of ways to have sum = j + nums[i] - totalSum 
+                    next[j - nums[i]] += dp[j];
+                }//The previous reached range is  -totalSum < [-currSum, currSum ] < totalSum.
+                //Since currSum + nums[i] no larger than totalSum, -currSum - nums[i] no smaller than -totalSum, so it won't exceed the boundary
+            }
+            dp = next;
+        }
+        return dp[S + totalSum]; //return the num of ways to have sum = S
+    }
+    public int findTargetSumWays(int[] nums, int S) {
+        if (nums == null || nums.length == 0){
+            return 0;
+        }
+        return helper(nums, 0, 0, S, new HashMap<>());
+    }
+    private int helper(int[] nums, int index, int sum, int S, Map<String, Integer> map){
+        String encodeString = index + "->" + sum;
+        if (map.containsKey(encodeString)){
+            return map.get(encodeString);
+        }
+        if (index == nums.length){
+            if (sum == S){
+                return 1;
+            }else {
+                return 0;
+            }
+        }
+        int curNum = nums[index];
+        int add = helper(nums, index + 1, sum - curNum, S, map);
+        int minus = helper(nums, index + 1, sum + curNum, S, map);
+        map.put(encodeString, add + minus);
+        return add + minus;
     }
 }

@@ -12,11 +12,25 @@ dp[n]=dp[n-1]+dp[n-2]+ 2*(dp[n-3]+...+d[0])
 =dp[n-1]+dp[n-2]+dp[n-3]+dp[n-3]+2*(dp[n-4]+...+d[0])
 =dp[n-1]+dp[n-3]+(dp[n-2]+dp[n-3]+2*(dp[n-4]+...+d[0]))
 =dp[n-1]+dp[n-3]+dp[n-1]
-=2*dp[n-1]+dp[n-3]
+=2*dp[n-1]+dp[n-3]  // The goal is to get dp[n] depends on only n-1 and n-2
+
+follow-up: if there is 2X1 and 1X1, how many ways to do 2XN vs MXN
 */
 
 public class Domino {
     public int numTilings(int N) {
-
+        int mold = 1000000007;
+        int[] dp = new int[N+1];
+        dp[0] = 1;
+        dp[1] = 1;
+        dp[2] = 2;
+        dp[3] = 5;
+        if (N <= 3) {
+            return dp[N];
+        }
+        for (int i = 4; i <= N; i++){
+            dp[i] = (2*dp[n-1] % mold + dp[n-3] % mold)%mold;
+        }
+        return dp[N];
     }
 }

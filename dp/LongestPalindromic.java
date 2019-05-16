@@ -42,4 +42,14 @@ public class LongestPalindroic {
             
         return res;
         }
+    public String longestPalindromic(String s) {
+       if (s == null || s.length() == 0) {
+           return s;
+       }
+       char [] charArray = s.toCharArray();
+       int maxLen = 0;
+       for (int i = 0; i < charArray.length; i++) {
+           int left = i;
+       }
+    }
 }

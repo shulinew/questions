@@ -1,3 +1,7 @@
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 /*
 n the "100 game," two players take turns adding, to a running total, any integer from 1..10. The player who first causes the running total to reach or exceed 100 wins.
 
@@ -24,51 +28,9 @@ The second player will win by choosing 10 and get a total = 11, which is >= desi
 Same with other integers chosen by the first player, the second player will always win.
 https://leetcode.com/problems/can-i-win/discuss/95277/Java-solution-using-HashMap-with-detailed-explanation
 */
-
 public class CanIWin {
-        public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
-        int sum = (1+maxChoosableInteger)*maxChoosableInteger/2;
-        if(sum < desiredTotal) return false;
-        if(desiredTotal <= 0) return true;
-        
-        map = new HashMap();
-        used = new boolean[maxChoosableInteger+1];
-        return helper(desiredTotal);
-    }
-    
-    public boolean helper(int desiredTotal){
-        if(desiredTotal <= 0) return false;
-        int key = format(used);
-        if(!map.containsKey(key)){
-    // try every unchosen number as next step
-            for(int i=1; i<used.length; i++){
-                if(!used[i]){
-                    used[i] = true;
-     // check whether this lead to a win (i.e. the other player lose)
-                    if(!helper(desiredTotal-i)){
-                        map.put(key, true);
-                        used[i] = false;
-                        return true;
-                    }
-                    used[i] = false;
-                }
-            }
-            map.put(key, false);
-        }
-        return map.get(key);
-    }
-   
-    // transfer boolean[] to an Integer 
-    public int format(boolean[] used){
-        int num = 0;
-        for(boolean b: used){
-            num <<= 1;
-            if(b) num |= 1;
-        }
-        return num;
-    }
 
-    //
+    //https://leetcode.com/problems/can-i-win/discuss/95293/Java-easy-strightforward-solution-with-explanation
     /*
     The solution is quite strightforward. First off we have to eliminate primitive cases. So,
 
@@ -93,33 +55,159 @@ The figure above helps to imagine how the algorithm considers all possible scena
 
 P.S: Time complexity of naive implementation will work for O(n!). Therefore we have to memorize branch states after traversing once.
     */
-    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
-        if(maxChoosableInteger >= desiredTotal) return true;
-        if(maxChoosableInteger+1 >=desiredTotal) return false;
-        set = new Map[301];
-        for(int i  =0 ;i<301;i++) set[i] = new HashMap<>();
-        if(maxChoosableInteger*(maxChoosableInteger+1)/2 < desiredTotal) return false;
-        return canWin((1<<maxChoosableInteger+1)-1, desiredTotal);
-    }
+    // Map<Integer, Boolean> set[];
+    // public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+    //     if(maxChoosableInteger >= desiredTotal) return true;
+    //     if(maxChoosableInteger+1 >=desiredTotal) return false;
+    //     set = new Map[301];
+    //     for(int i  =0 ;i<301;i++) set[i] = new HashMap<>();
+    //     if(maxChoosableInteger*(maxChoosableInteger+1)/2 < desiredTotal) return false;
+    //     return canWin((1<<maxChoosableInteger+1)-1, desiredTotal);
+    // }
     
-    public boolean canWin(int set1, int total){
-        if(set[total].containsKey(set1)) return set[total].get(set1);
-        for(int i = 20;i>=1;i--){
-            int p = (1<<i);
-            if((p&set1) == p){
-                int set1next = (set1^p);
-                int totalNext = total - i;
-                if(totalNext<=0) return true;
-                boolean x;
-                if(set[totalNext].containsKey(set1next)) x = set[totalNext].get(set1next);
-                else x = canWin(set1next, totalNext);
-                if(!x){
-                    set[total].put(set1, true);
-                    return true;
+    // public boolean canWin(int set1, int total){
+    //     if(set[total].containsKey(set1)) return set[total].get(set1);
+    //     for(int i = 20;i>=1;i--){
+    //         int p = (1<<i);
+    //         if((p&set1) == p){
+    //             int set1next = (set1^p);
+    //             int totalNext = total - i;
+    //             if(totalNext<=0) return true;
+    //             boolean x;
+    //             if(set[totalNext].containsKey(set1next)) x = set[totalNext].get(set1next);
+    //             else x = canWin(set1next, totalNext);
+    //             if(!x){
+    //                 set[total].put(set1, true);
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     set[total].put(set1, false);
+    //     return false;
+    // }
+    public static boolean canIWinBrutalForce(int maxChoosableInteger, int desiredTotal) {
+        if (desiredTotal <= 0) return true;
+        int sum = (maxChoosableInteger + 1) * maxChoosableInteger/2; 
+        Map<String, Boolean> map = new HashMap<String,Boolean>();
+        boolean [] used = new boolean[maxChoosableInteger+1];
+        return desiredTotal < 2 ? true : sum < desiredTotal ? false : sum == desiredTotal ? (maxChoosableInteger % 2 == 0 ? false : true) : helper(desiredTotal, map, used);
+    }
+    private static boolean helper(int desiredTotal, Map<String, Boolean> map, boolean[] used){
+        if (desiredTotal <= 0) {
+            return false;
+        }
+        String key = Arrays.toString(used);
+        if (!map.containsKey(key)) {
+            for(int i = 1; i < used.length; i++) {
+                if (!used[i]) {
+                    used[i] = true;
+                    // the other player lose
+                    if(!helper(desiredTotal-i, map, used)) {
+                        map.put(key, true);
+                        // Before return, need reset for this path for other recursive call
+                        used[i] = false;
+                        return true;
+                    }
+                    //take i doesn't win, try another one
+                    used[i] = false;
                 }
             }
+            // exhaust all possible remaining numbers, this key doesn't work
+            map.put(key, false);
         }
-        set[total].put(set1, false);
+        return map.get(key);
+    }
+
+    int [] memo = new int[1<<20];
+    public boolean canIwin(int maxChoosableInteger, int target) {
+        int sum = (1 + maxChoosableInteger) * maxChoosableInteger/2; // sum of all numbers
+        return target < 2 ? true : sum < target ? false : sum == target ? (maxChoosableInteger % 2 == 0 ? false : true) : dfs(maxChoosableInteger, target, 0);
+    }
+    private boolean dfs(int maxChoosableInteger, int target, int state) {
+        if (target <= 0 || memo[state] != 0) {
+            return target > 0 && memo[state] > 0;
+        }
+        for (int i = 0; i < maxChoosableInteger; i++) {
+            if ((state & 1 << i) == 0 && !dfs(maxChoosableInteger,target-i-1, state | 1 << i)) {
+                memo[state] = 1;
+                return true;
+            }
+        }
+        memo[state] = -1;
         return false;
     }
+
+
+    /////////////////////////////////////////////////////
+    public int minScoreTriangulation (int[] A) {
+        int[][] memo = new int[51][51]; // why 51
+        return dp(0, A.length-1, A, memo);
+    }
+    private int dp(int pos1, int pos2, int[] A, int[][] memo) {
+        if (pos2 - pos1 <= 1) {
+            return 0;
+        }
+        if (memo[pos1][pos2] != 0) {
+            return memo[pos1][pos2];
+        }
+        int result = Integer.MAX_VALUE;
+        for (int i = pos1+1; i < pos2; i++) {
+            result = Math.min(result, dp(pos1, i, A, memo) + dp(i, pos2, A, memo) + A[pos1]*A[pos2]*A[i]);
+        }
+        memo[pos1][pos2] = result;
+        return result;
+    }
+    public static void main (String[] args) {
+        CanIWin test = new CanIWin();
+        // // System.out.println(CanIWin.canIWinBrutalForce(10, 11));
+        // System.out.println(test.canIwin(4, 6));
+        // MiniscoreTriangulation test1 = new MiniscoreTriangulation();
+        // System.out.println(CanIWin.canIWinBrutalForce(10, 11));
+        System.out.println(test.minScoreTriangulation(new int[]{1,3,1,4,1,5}));
+        // System.out.println(System.getenv("Path"));
+    }
+
+/*
+State of Game: initially, we have all M numbers [1, M] available in the pool. Each number may or may not be picked at a state of the game later on, so we have maximum 2^M different states. Note that M <= 20, so int range is enough to cover it. For memorization, we define int k as the key for a game state, where
+
+    the i-th bit of k, i.e., k&(1<<i) represents the availability of number i+1 (1: picked; 0: not picked).
+
+At state k, the current player could pick any unpicked number from the pool, so state k can only go to one of the valid next states k':
+
+    if i-th bit of k is 0, set it to be 1, i.e., next state k' = k|(1<<i).
+
+Recursion: apparently
+
+    the current player can win at state k iff opponent can't win at some valid next state k'.
+
+Memorization: to speed up the recursion, we can use a vector<int> m of size 2^M to memorize calculated results m[k] for state key k:
+
+    0 : not calculated yet;
+    1 : current player can win;
+    -1: current player can't win.
+
+Initial State Check:
+There are several checks to be done at initial state k = 0 for early termination so we won't waste our time for DFS process:
+
+    if T < 2, obviously, the first player wins by simply picking 1.
+    if the sum of entire pool S = M*(M+1)/2 is less than T, of course, nobody can reach T.
+    if the sum S == T, the order to pick numbers from the pool is irrelevant. Whoever picks the last will reach T. So the first player can win iff M is odd.
+
+*/
+    // bool canIWin(int M, int T) {
+    //   int S = M*(M+1)/2; // sum of entire pool
+    //   return T<2? true : S<T? false : S==T? M%2 : dfs(M,T,0);
+    // }
+    
+    // bool dfs(int M, int T, int k) {
+    //   if (T<=0 || m[k]) return T>0 && m[k]>0; // memorization or total reached by opponent
+    //   for (int i = 0; i < M; ++i)
+    //     if (!(k&1<<i) && !dfs(M, T-i-1, k|1<<i)) return m[k] = 1; // current player wins
+    //   return !(m[k] = -1); // current player can't win
+    // }
+    // memo save state
+    // 0: not calculate
+    // 1: win
+    // -1: lose
+
 }

@@ -14,22 +14,101 @@ public class CoinChange {
         }
         return dp[amount];
     }
-    public int coinChange(int[] coins, int amount) {
-        if(amount<1) return 0;
-        return helper(coins, amount, new int[amount]);
+
+    public int coinChangeMemo(int[] coins, int amount){
+        int min = Integer.MAX_VALUE;
+        int[][] memo = new int[coins.length][amount+1];
+        min = helperMin(0, coins, amount);
+        return min == Integer.MAX_VALUE ? -1:min;
+    }
+    private int helperMin(int start, int[] coins, int amount){
+        int result = Integer.MAX_VALUE;
+        if(start == coins.length) {
+            return amount == 0 ? 0:result;
+        }
+        if (amount < 0){
+            return result;
+        }
+        if (amount == 0) {
+            return 0;
+        }
+        if (memo[start][amount] > 0 ){
+            return memo[start][amount];
+        }
+        int useCoin = helperMin(start, coins, amount-coins[start]);
+        int notUseCoin = helperMin(start+1, coins, amount);
+        if (useCoin != Integer.MAX_VALUE){
+            result = Math.min(result, useCoin + 1);
+        } 
+        result = Math.min(result, notUseCoin);
+        memo[start][amount] = result;
+        return result;
     }
 
-    private int helper(int[] coins, int rem, int[] count) { // rem: remaining coins after the last step; count[rem]: minimum number of coins to sum up to rem
-        if(rem<0) return -1; // not valid
-        if(rem==0) return 0; // completed
-        if(count[rem-1] != 0) return count[rem-1]; // already computed, so reuse
-        int min = Integer.MAX_VALUE;
-        for(int coin : coins) {
-            int res = helper(coins, rem-coin, count);
-            if(res>=0 && res < min)
-                min = 1+res;
+    public int coinChangeBrutalForce(int[] coins, int amount) {
+        int[][][] memo = new int[coins.length][amount+1][amount+1];
+        return coinChange(0, coins, amount, memo);
+    }
+    private int coinChange(int start, int[] coins, int amount, int[][][] memo){
+       if (amount == 0){
+           return 0;
+       }
+       if (start == coins.length || amount < 0) {
+           return -1;
+       }
+       int maxVal = amount/coins[start];
+       int minCost = Integer.MAX_VALUE;
+       for (int i = 0; i <= maxVal; i++){
+           if (amount >= i * coins[start]) {
+               if (memo[start][amount][i] > 0) {
+                   return memo[start][amount][i];
+               }
+               int result = coinChange(start+1, coins, amount-i*coins[start], memo);
+               if (result != -1){
+                   minCost = Math.min(minCost, result + i);
+                   memo[start][amount][i] = minCost;
+               }
+           }
         }
-        count[rem-1] = (min==Integer.MAX_VALUE) ? -1 : min;
-        return count[rem-1];
+       return (minCost == Integer.MAX_VALUE) ? -1: minCost;
+    }
+    public int coinChange(int[] coins, int amount) {
+        return coinChange(coins, amount, new int[amount]);
+    }
+    //count[i]: minimum for amount is i
+    private int coinChange(int[] coins, int amount, int[] count){
+        if (amount < 0) {
+            return -1;
+        }
+        if (amount == 0) {
+            return 0;
+        }
+        if (count[amount-1] != 0) {
+            return count[amount-1];
+        }
+        int min = Integer.MAX_VALUE;
+        for (int coin: coins) {
+            int result = coinChange(coins, amount - coin, count);
+            if (result >= 0) {
+                min = Math.min(min, result + 1);
+            }
+        }
+        count[amount - 1] = (min == Integer.MAX_VALUE) ? -1: min;
+        return count[amount-1];
+    }
+    //Bottom up
+    public int coinChange(int[] coins, int amount) {
+        int max = amount + 1;             
+        int[] dp = new int[amount + 1];  
+        Arrays.fill(dp, max);  
+        dp[0] = 0;   
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                if (coins[j] <= i) {
+                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
     }
 }

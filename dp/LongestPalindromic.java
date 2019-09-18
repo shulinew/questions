@@ -1,4 +1,5 @@
-public class LongestPalindroic {
+package dp;
+public class LongestPalindromic {
     private int lo, maxLen;
 
     public String longestPalindrome(String s) {
@@ -24,7 +25,7 @@ public class LongestPalindroic {
         }
     }
 
-    public String longestPalindrome(String s) {
+    public String longestPalindrome1(String s) {
         int n = s.length();
         String res = null;
             
@@ -41,15 +42,31 @@ public class LongestPalindroic {
         }
             
         return res;
+    }
+    public String longestPalindromeBrutal(String s) {
+        int length = s.length();
+        for (int i = 0; i < length; i++) {
+            for (int len = 1; len <= length-i; len++) {
+                String subString = s.substring(i, len);
+            }
         }
-    public String longestPalindromic(String s) {
-       if (s == null || s.length() == 0) {
-           return s;
-       }
-       char [] charArray = s.toCharArray();
-       int maxLen = 0;
-       for (int i = 0; i < charArray.length; i++) {
-           int left = i;
-       }
+    }
+    private boolean isPalindrome(String s) {
+        if (s.length() == 0 || s.length() == 1) {
+            return true;
+        }
+        char[] chars = s.toCharArray();
+        int left = 0, right = s.length()-1;
+        while (left <= right && chars[left] == chars[right]) {
+            left++;
+            right--;
+        }
+        return (left >= right) ? true : false;
+    }
+    public static void main(String[] args) {
+        LongestPalindromic test = new LongestPalindromic();
+        System.out.println(test.isPalindrome("aaa"));
+        System.out.println(test.isPalindrome("a"));
+        System.out.println(test.isPalindrome("ab"));
     }
 }

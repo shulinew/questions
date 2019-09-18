@@ -37,34 +37,20 @@ We keep these updated as we iterate through i backwards. At the end, we want min
         return Math.min(f1, f2);
     }
 
+    public int minCostClimbingStairs1(int[] cost) {
+        int length = cost.length;
+        int[] dp = new int[length];
+        if (cost.length <=1) return Math.min(cost[0], cost[1]);
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+        for (int i = 2; i < length; i++){
+            dp[i] = Math.min(dp[i-2]+cost[i], dp[i-1]+cost[i]);
+        }
+        return Math.min(dp[length-1], dp[length-2]);
+    }
+
 
     /* Simple DP solution - at each step we make a decision to take this step or not. If we take current step, then we take the min of taking and not taking previous step and add the current cost.
 If we don't take the current step, then we have to take the previous step - so directly get the value from taking the previous step
 Finally return the min of taking and not taking the final step*/
-
-
-dp[i] specifies the minimum cost required to reach the ith step
-Its given that we can either start from the 0th index step or the 1st index. That basically means that the minimum cost at 0th index step or 1st index step is 0.
-i.e dp[0]=0 and dp[1]=0;
-To go further with this, I am just using a simple formula-
-dpi[i] = Minimum of (min cost of i-1 step + cost of i-1 step, min cost of i-2 step + cost of i-2 step)
-= Math.min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
-
-result would be stored in dp[cost.length];
-
-class Solution {
-    public int minCostClimbingStairs(int[] cost) {
-        
-        int[] dp=new int[cost.length+1];
-        dp[0]=0;
-        dp[1]=0;
-        
-        for(int i=2;i<dp.length;i++){
-            dp[i]=Math.min(dp[i-1]+cost[i-1], dp[i-2]+cost[i-2]);
-        }
-        return dp[cost.length];
-    }
-}
-
-
 }

@@ -6,34 +6,34 @@ For example, employee 1 is the leader of employee 2, and employee 2 is the leade
 Now given the employee information of a company, and an employee id, you need to return the total importance value of this employee and all his subordinates.
 */
 
-class Employee{
-    public int id;
-    public int importance;
-    public List<Integer> subordinates;
-}
-
-public EmployeeImportance{
-    public int getImportance(list<Employee> employees, int id) {
-        int importances = 0;
-        int [] visited = new int[2000];
-        HashMap<Integer, Employee> maps = new Map<Integer, Employee>();
-        maps = buildEmployeeMap(employees);
-        importances = dfs(maps, id, visited, importances);
-        return importances;
-    }
-    private int dfs(HashMap<Integer, Employee> maps, int id, int[] visited, int importances) {
-        if (!visited[id]) {
-            visited[id] = true;
-            importances += maps.get(id).importance;
-           for(Integer sub: thisEmployee.subordinates) {
-               importances += dfs(maps, id, visited, importaces);
-           }
-        }
-        return importances;
-    }
-    private void buildEmployeeMap(List<Employee> employees, Map<Integer, Employee> map) {
-        for (Employee employee: employees) {
-            map.put(employee.id, employee);
-        }
-    }
-}
+//class Employee{
+//    public int id;
+//    public int importance;
+//    public List<Integer> subordinates;
+//}
+//
+//public EmployeeImportance{
+//    public int getImportance(list<Employee> employees, int id) {
+//        int importances = 0;
+//        int [] visited = new int[2000];
+//        HashMap<Integer, Employee> maps = new Map<Integer, Employee>();
+//        maps = buildEmployeeMap(employees);
+//        importances = dfs(maps, id, visited, importances);
+//        return importances;
+//    }
+//    private int dfs(HashMap<Integer, Employee> maps, int id, int[] visited, int importances) {
+//        if (!visited[id]) {
+//            visited[id] = true;
+//            importances += maps.get(id).importance;
+//           for(Integer sub: thisEmployee.subordinates) {
+//               importances += dfs(maps, id, visited, importaces);
+//           }
+//        }
+//        return importances;
+//    }
+//    private void buildEmployeeMap(List<Employee> employees, Map<Integer, Employee> map) {
+//        for (Employee employee: employees) {
+//            map.put(employee.id, employee);
+//        }
+//    }
+//}
